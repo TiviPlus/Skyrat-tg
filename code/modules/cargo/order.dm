@@ -3,8 +3,8 @@
 	var/order_id = 0
 	var/errors = 0
 
-/obj/item/paper/fluff/jobs/cargo/manifest/New(atom/A, id, cost)
-	..()
+/obj/item/paper/fluff/jobs/cargo/manifest/Initialize(mapload, id, cost)
+	. = ..()
 	order_id = id
 	order_cost = cost
 
@@ -28,18 +28,21 @@
 	var/orderer_ckey
 	var/reason
 	var/discounted_pct
+	///area this order wants to reach, if not null then it will come with the deliver_first component set to this area
+	var/department_destination
 	var/datum/supply_pack/pack
 	var/datum/bank_account/paying_account
 	var/obj/item/coupon/applied_coupon
 
-/datum/supply_order/New(datum/supply_pack/pack, orderer, orderer_rank, orderer_ckey, reason, paying_account, coupon)
-	id = SSshuttle.ordernum++
+/datum/supply_order/New(datum/supply_pack/pack, orderer, orderer_rank, orderer_ckey, reason, paying_account, department_destination, coupon)
+	id = SSshuttle.order_number++
 	src.pack = pack
 	src.orderer = orderer
 	src.orderer_rank = orderer_rank
 	src.orderer_ckey = orderer_ckey
 	src.reason = reason
 	src.paying_account = paying_account
+	src.department_destination = department_destination
 	src.applied_coupon = coupon
 
 /datum/supply_order/proc/generateRequisition(turf/T)
@@ -61,8 +64,8 @@
 	P.update_appearance()
 	return P
 
-/datum/supply_order/proc/generateManifest(obj/container, owner, packname) //generates-the-manifests.
-	var/obj/item/paper/fluff/jobs/cargo/manifest/P = new(container, id, 0)
+/datum/supply_order/proc/generateManifest(obj/container, owner, packname, cost) //generates-the-manifests.
+	var/obj/item/paper/fluff/jobs/cargo/manifest/P = new(null, id, cost)
 
 	var/station_name = (P.errors & MANIFEST_ERROR_NAME) ? new_station_name() : station_name()
 
@@ -114,12 +117,14 @@
 		account_holder = paying_account.account_holder
 	else
 		account_holder = "Cargo"
-	var/obj/structure/closet/crate/C = pack.generate(A, paying_account)
-	generateManifest(C, account_holder, pack)
-	return C
+	var/obj/structure/closet/crate/crate = pack.generate(A, paying_account)
+	if(department_destination)
+		crate.AddElement(/datum/element/deliver_first, department_destination, pack.cost)
+	generateManifest(crate, account_holder, pack, pack.cost)
+	return crate
 
-/datum/supply_order/proc/generateCombo(miscbox, misc_own, misc_contents)
+/datum/supply_order/proc/generateCombo(miscbox, misc_own, misc_contents, misc_cost)
 	for (var/I in misc_contents)
 		new I(miscbox)
-	generateManifest(miscbox, misc_own, "")
+	generateManifest(miscbox, misc_own, "", misc_cost)
 	return

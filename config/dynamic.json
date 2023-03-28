@@ -24,11 +24,23 @@
 			},
 			"protected_roles": [
 				"Prisoner",
+				"Blueshield",
+				"Corrections Officer",
 				"Security Officer",
 				"Warden",
 				"Detective",
+				"Security Medic",
+				"Security Sergeant",
+				"Civil Disputes Officer",
 				"Head of Security",
-				"Captain"
+				"Captain",
+				"Nanotrasen Representative",
+				"Head of Personnel",
+				"Chief Engineer",
+				"Chief Medical Officer",
+				"Research Director",
+				"Quartermaster",
+				"Vanguard Operative"
 			],
 			"restricted_roles": [
 				"Cyborg"
@@ -110,10 +122,6 @@
 		},
 
 		"Abductors": {
-			"weight": 0
-		},
-
-		"Swarmers": {
 			"weight": 0
 		},
 

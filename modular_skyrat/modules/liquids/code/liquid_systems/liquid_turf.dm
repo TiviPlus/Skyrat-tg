@@ -60,7 +60,7 @@
 	//Check atmos adjacency to cut off any disconnected groups
 	if(lgroup)
 		var/assoc_atmos_turfs = list()
-		for(var/tur in GetAtmosAdjacentTurfs())
+		for(var/tur in get_atmos_adjacent_turfs())
 			assoc_atmos_turfs[tur] = TRUE
 		//Check any cardinals that may have a matching group
 		for(var/direction in GLOB.cardinals)
@@ -76,6 +76,8 @@
 	for(var/r in giver.reagent_list)
 		var/datum/reagent/R = r
 		compiled_list[R.type] = R.volume
+	if(!compiled_list.len) //No reagents to add, don't bother going further
+		return
 	add_liquid_list(compiled_list, no_react, giver.chem_temp)
 
 //More efficient than add_liquid for multiples
@@ -195,7 +197,7 @@
 /turf/proc/process_liquid_cell()
 	if(!liquids)
 		if(!lgroup)
-			for(var/tur in GetAtmosAdjacentTurfs())
+			for(var/tur in get_atmos_adjacent_turfs())
 				var/turf/T2 = tur
 				if(T2.liquids)
 					if(T2.liquids.immutable)
@@ -223,7 +225,7 @@
 
 /turf/proc/process_immutable_liquid()
 	var/any_share = FALSE
-	for(var/tur in GetAtmosAdjacentTurfs())
+	for(var/tur in get_atmos_adjacent_turfs())
 		var/turf/T = tur
 		if(can_share_liquids_with(T))
 			//Move this elsewhere sometime later?

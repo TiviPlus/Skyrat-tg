@@ -23,7 +23,7 @@
 	var/hole_size= NO_HOLE
 	var/invulnerable = FALSE
 
-/obj/structure/fence/Initialize()
+/obj/structure/fence/Initialize(mapload)
 	. = ..()
 
 	update_cut_status()
@@ -112,10 +112,10 @@
 	cuttable = FALSE
 	var/open = FALSE
 
-/obj/structure/fence/door/Initialize()
+/obj/structure/fence/door/Initialize(mapload)
 	. = ..()
-
-	update_door_status()
+	if(open) //SKYRAT EDIT CHANGE
+		update_door_status()
 
 /obj/structure/fence/door/opened
 	icon_state = "door_opened"

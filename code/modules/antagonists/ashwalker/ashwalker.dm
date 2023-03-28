@@ -4,7 +4,7 @@
 	var/list/players_spawned = new
 
 /datum/antagonist/ashwalker
-	name = "Ash Walker"
+	name = "\improper Ash Walker"
 	job_rank = ROLE_LAVALAND
 	show_in_antagpanel = FALSE
 	show_to_ghosts = TRUE
@@ -32,6 +32,7 @@
 	. = ..()
 	RegisterSignal(owner.current, COMSIG_MOB_EXAMINATE, .proc/on_examinate)
 	owner.teach_crafting_recipe(/datum/crafting_recipe/skeleton_key)
+	owner.teach_crafting_recipe(/datum/crafting_recipe/ashnecklace) //SKYRAT EDIT DRACONIC NECKLACE//
 
 /datum/antagonist/ashwalker/on_removal()
 	. = ..()

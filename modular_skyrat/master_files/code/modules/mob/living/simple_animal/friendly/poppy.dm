@@ -7,7 +7,7 @@
 	icon_dead = "poppypossum_dead"
 	maxHealth = 30
 	health = 30
-	speak = list("Hiss!","HISS!","Hissss?")
+	speak = list("Hiss!", "HISS!", "Hissss?")
 	speak_emote = list("hisses")
 	emote_hear = list("hisses.")
 	emote_see = list("runs in a circle.", "shakes.")
@@ -39,7 +39,7 @@
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 
 	var/datum/component/overlay_lighting/lighting_object = src.GetComponent(/datum/component/overlay_lighting)
-	var/obj/effect/overlay/light_cone/cone = lighting_object.cone
+	var/image/cone = lighting_object.cone
 	cone.transform = cone.transform.Translate(0, -8) //adjust the little headlamp
 
 /mob/living/simple_animal/pet/poppy/death()
